@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <title>Toast Message</title>
+</head>
+<body>
+    <div id="toast"></div>
+
+    <div style="display: flex; flex-direction: column;">
+        <div style=" margin-top: 12px; margin-left: 0;" onclick="showSucessToast()" class="btn btn--success">Show Success Toast</div>
+        <div style=" margin-top: 12px; margin-left: 0;" onclick="showErrorToast()" class="btn btn--danger">Show Error Toast</div>
+        <div style=" margin-top: 12px; margin-left: 0;" onclick="showWarnToast" class="btn btn--warn btn--disabled">Show Warning Toast</div>
+    </div>
+
+    <script>
+        function toast(title ='', message='', type='', duration=3000) {
+            const main = document.getElementById('toast');
+            if(main) {
+                const toast = document.createElement('div');
+                const icons = {
+                    success: 'fa-solid fa-circle-check',
+                    warning:'fas fa-exclamation-circle',
+                    error: 'fas fa-exclamation-circle'
+                }
+                const icon = icons[type];
+
+                const autoRemove = setTimeout(function() {
+                    main.removeChild(toast)
+                },4000);
+
+                toast.onclick = (e)=> {
+                    if(e.target.closest('.toast__close')) {
+                        main.removeChild(toast);
+                        clearTimeout(autoRemove);
+                    }
+                }
+                toast.classList.add('toast', `toast--${type}`);
+                toast.innerHTML = `
+                <div class="toast__icon">
+                    <i class="${icon}"></i>
+                </div>
+
+                <div class="toast__body">
+                    <h3 class="toast__title">${title}</h3>
+                    <p class="toast__msg">${message}</p>
+                </div>
+
+                <div class="toast__close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                `;
+                main.appendChild(toast);
+            }
+        }
+
+        function showSucessToast() {
+            toast('Success', 
+            'Lorem, ipsum dolor sit amet consectetur adipisicing elit!', 
+            'success', 
+            3000);
+        }
+
+        function showErrorToast() {
+            toast('Error', 
+            'Lorem, ipsum dolor sit amet consectetur adipisicing elit!', 
+            'error', 
+            3000);
+        }
+
+
+    </script>
+</body>
+
+</html>
